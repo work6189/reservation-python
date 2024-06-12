@@ -1,17 +1,26 @@
 version: '1.0'
 
+networks:
+  reservation-network: 
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.56.0/24
 services:
   db:
     image: postgres:16.3
     container_name: postgresql
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: test
+      POSTGRES_USER: postgre
+      POSTGRES_PASSWORD: postgres_pw
+      POSTGRES_DB: Reservation
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      reservation-network:
+        ipv4_address: 192.168.56.11
 
   web:
     build : .
@@ -21,7 +30,10 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/test
+      DATABASE_URL: postgresql://postgres:postgres_pw@db:5432/Reservation
+    networks:
+      reservation-network:
+        ipv4_address: 192.168.56.111
 
 volumes:
   postgres_data:
