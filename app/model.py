@@ -1,4 +1,5 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
+from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 
 from .database import Base
@@ -10,24 +11,24 @@ class Member(Base):
     Id = Column(String, unique=True, index=True)
     Name = Column(String, nullable=False)
     Password = Column(String, nullable=False)
-    RegDatetime = Column(DateTime)
+    RegDatetime = Column(DateTime, server_default=func.now())
 
-class Reservation(Base):
-    __tablename__ = "Reservation"
+# class Reservation(Base):
+#     __tablename__ = "Reservation"
 
-    Idx = Column(Integer, primary_key=True, autoincrement=True)
-    Title = Column(String, nullable=False)
-    StartDatetime = Column(DateTime)
-    PersonnelNumber = Column(Integer, default=0)
-    RegDatetime = Column(DateTime)
+#     Idx = Column(Integer, primary_key=True, autoincrement=True)
+#     Title = Column(String, nullable=False)
+#     StartDatetime = Column(DateTime)
+#     PersonnelNumber = Column(Integer, default=0)
+#     RegDatetime = Column(DateTime, server_default=func.now())
 
-class ReservationMember(Base):
-    __tablename__ = "ReservationMember"
+# class ReservationMember(Base):
+#     __tablename__ = "ReservationMember"
 
-    Idx = Column(Integer, ForeignKey("Reservation.Idx"))
-    MemberIdx = Column(Integer, ForeignKey("Member.MemberIdx"))
-    Confirmation = Column(Boolean, default=False)
-    RegDatetime = Column(DateTime)
+#     Idx = Column(Integer, ForeignKey("Reservation.Idx"))
+#     MemberIdx = Column(Integer, ForeignKey("Member.MemberIdx"))
+#     Confirmation = Column(Boolean, default=False)
+#     RegDatetime = Column(DateTime,  server_default=func.now())
 
 
 

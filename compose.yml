@@ -11,11 +11,12 @@ services:
     image: postgres:16.3
     container_name: postgresql
     environment:
-      POSTGRES_USER: postgre
+      POSTGRES_USER: web
       POSTGRES_PASSWORD: postgres_pw
-      POSTGRES_DB: Reservation
+      POSTGRES_DB: exam
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      #- /Users/work6189/Documents/project/db/postgres_data:/var/lib/postgresql/data
+      - ./sql/:/docker-entrypoint-initdb.d/
     ports:
       - "5432:5432"
     networks:
@@ -30,10 +31,8 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgresql://postgres:postgres_pw@db:5432/Reservation
+      DATABASE_URL: postgresql://web:postgres_pw@db:5432/exam
     networks:
       reservation-network:
         ipv4_address: 192.168.56.111
 
-volumes:
-  postgres_data:
