@@ -25,6 +25,7 @@ services:
 
   web:
     build : .
+    # command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
     container_name: fastapi
     ports:
       - "8000:8000"
@@ -32,6 +33,7 @@ services:
       - db
     environment:
       DATABASE_URL: postgresql://web:postgres_pw@db:5432/exam
+      SECRET_KEY: 2BA9F6BD3CA555A135DC1E34E8EB1
     networks:
       reservation-network:
         ipv4_address: 192.168.56.111

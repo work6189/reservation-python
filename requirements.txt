@@ -3,3 +3,5 @@ uvicorn[standard]
 databases[postgresql]
 sqlalchemy
 psycopg2-binary
+python-jose
+pyjwt
