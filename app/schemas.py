@@ -18,35 +18,63 @@ class Member(MemberBase):
     class Config:
         from_attributes = True
 
+class ExamSearch(BaseModel):
+    Title: str = None
+    StartDatetime: datetime = None
+    EndDatetime: datetime = None
+    page: int = 1
+    limit: int = 10
+    class Config:
+        orm_mode = True
+
+class ExamList(BaseModel):
+    ExamIdx: int 
+    Title: str 
+    ExamDatetime: datetime
+    PersonnelCount: int
+    class Config:
+        from_attributes=True
+
 class ExamBase(BaseModel):
     Title: str
     ExamDatetime: datetime
-    PersonnelNumber: int = 50000
+    PersonnelCount: int = 50000
     
 class ExamCreate(ExamBase):
     Title: str
     ExamDatetime: datetime
-    PersonnelNumber: int = 50000
+    PersonnelCount: int = 50000    
 
 class Exam(ExamBase):
     Idx: int
-
     class Config:
         from_attributes = True
 
-# class AdminBase(BaseModel):
-#     Id: str
-#     Name: str
-    
-# class AdminCreate(AdminBase):
-#     Password: str
+class ExamWithReservationCount(ExamList):
+    ReservationCount: int
 
-# class Admin(AdminBase):
-#     AdminIdx: int
+class ExamWithExamReservation(ExamList):
+    MemberIdx: int
+    Memo: str
+    ConfirmDatetime: datetime
+    RegDatetime: datetime 
 
-#     class Config:
-#         # orm_mode = True
-#         from_attributes = True
+class Reservation(BaseModel):
+    Memo: str = None
+
+class AdminReservation(BaseModel):
+    Memo: str = None
+    ConfirmDatetime: datetime = None
+
+class AdminBase(BaseModel):
+    Id: str
+    Name: str
+
+class Admin(AdminBase):
+    AdminIdx: int
+
+    class Config:
+        from_attributes = True
 
 class responseModel(BaseModel):
     result: bool

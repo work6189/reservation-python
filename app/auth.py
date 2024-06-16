@@ -18,7 +18,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-def verify_token(token: str = Depends(oauth2_scheme)):
+def verify_member_token(token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -32,6 +32,23 @@ def verify_token(token: str = Depends(oauth2_scheme)):
     except JWTError:
         raise credentials_exception
     return data
+
+def verify_admin_token(token: str = Depends(oauth2_scheme)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        data: str = payload.get("data")
+        if data is None:
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+    return data
+
+
 
 def hash_password(password: str) -> str:
     return hashlib.sha256(password.encode()).hexdigest()
