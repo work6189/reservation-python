@@ -15,10 +15,6 @@ app = FastAPI()
 
 models.Base.metadata.create_all(bind=engine)
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
 @app.post("/users/", response_model=schema.MemberBase)
 def create_member(member: schema.MemberCreate, db: SessionLocal = Depends(get_db)):
     try:
