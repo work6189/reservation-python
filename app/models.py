@@ -37,6 +37,6 @@ class ExamReservation(Base):
     MemberIdx = Column(Integer, ForeignKey("Member.MemberIdx"), primary_key=True)
     ExamIdx = Column(Integer, ForeignKey("Exam.ExamIdx"), primary_key=True)
     Memo = Column(String)
-    ConfirmDatetime = Column(DateTime)
+    ConfirmDatetime = Column(DateTime, nullable=True)
     RegDatetime = Column(DateTime,  server_default=func.now())
 

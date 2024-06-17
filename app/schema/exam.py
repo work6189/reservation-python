@@ -39,5 +39,5 @@ class ExamWithReservationCount(ExamList):
 class ExamWithExamReservation(ExamList):
     MemberIdx: int
     Memo: str
-    ConfirmDatetime: datetime
+    ConfirmDatetime: datetime = None
     RegDatetime: datetime 
