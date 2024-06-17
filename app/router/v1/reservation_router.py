@@ -10,14 +10,14 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-@router.post("/reservation/{idx}")
-async def reservation_exam(idx: int, params: schema.Reservation, data: str = Depends(auth.verify_member_token), db: SessionLocal = Depends(get_db)):
+@router.post("/reservation/{examIdx}")
+async def reservation_exam(examIdx: int, params: schema.Reservation, data: str = Depends(auth.verify_member_token), db: SessionLocal = Depends(get_db)):
     try:
         db_member = db.query(models.Member).filter(models.Member.MemberIdx == data).first()
         if not db_member :
             raise HTTPException(status_code=400, detail="Empty Member")
         
-        db_exam = db.query(models.Exam).filter(models.Exam.ExamIdx == idx).first()
+        db_exam = db.query(models.Exam).filter(models.Exam.ExamIdx == examIdx).first()
         if not db_exam:
             raise HTTPException(status_code=400, detail="Not Exists Exam Data")
         
@@ -58,14 +58,14 @@ async def reservation_exam(idx: int, params: schema.Reservation, data: str = Dep
         logger.error(f"Error Create Reservation: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")  
    
-@router.delete("/reservation/{idx}")
-async def delete_reservation(idx: int, data: str = Depends(auth.verify_member_token), db: SessionLocal = Depends(get_db)):
+@router.delete("/reservation/{examIdx}")
+async def delete_reservation(examIdx: int, data: str = Depends(auth.verify_member_token), db: SessionLocal = Depends(get_db)):
     try:
         db_member = db.query(models.Member).filter(models.Member.MemberIdx == data).first()
         if not db_member :
             raise HTTPException(status_code=400, detail="Empty Member")
         
-        db_exam = db.query(models.Exam).filter(models.Exam.ExamIdx == idx).first()
+        db_exam = db.query(models.Exam).filter(models.Exam.ExamIdx == examIdx).first()
         if not db_exam:
             raise HTTPException(status_code=400, detail="Not Exists Exam Data")
         
@@ -92,15 +92,15 @@ async def delete_reservation(idx: int, data: str = Depends(auth.verify_member_to
         logger.error(f"Error Create Reservation: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
     
-@router.put("/reservation/{idx}")
-async def modify_reservation(idx: int, params: schema.Reservation, data: str = Depends(auth.verify_member_token), db: SessionLocal = Depends(get_db)):
+@router.put("/reservation/{examIdx}")
+async def modify_reservation(examIdx: int, params: schema.Reservation, data: str = Depends(auth.verify_member_token), db: SessionLocal = Depends(get_db)):
     try:
         db_member = db.query(models.Member).filter(models.Member.MemberIdx == data).first()
         if not db_member :
             # response = schemas.responseModel(result=False, code=91, message="Empty Member")
             raise HTTPException(status_code=400, detail="Empty Member")
         
-        db_exam = db.query(models.Exam).filter(models.Exam.ExamIdx == idx).first()
+        db_exam = db.query(models.Exam).filter(models.Exam.ExamIdx == examIdx).first()
         if not db_exam:
             raise HTTPException(status_code=400, detail="Not Exists Exam Data")
         

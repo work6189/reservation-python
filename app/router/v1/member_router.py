@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, HTTPException
-from typing import List
 from ...database import SessionLocal, get_db
 from ... import models, schema, auth
 import logging
@@ -57,47 +56,13 @@ def login_member(member: schema.MemberLogin, db: SessionLocal = Depends(get_db))
         logger.error(f"Error Login member: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
-@router.get("/users/my", response_model=List[schema.ExamWithExamReservation])
+@router.get("/users/my")
 def get_member_info(data: str = Depends(auth.verify_member_token),  db: SessionLocal = Depends(get_db)):
     try:
         db_member = db.query(models.Member).filter(models.Member.MemberIdx == data).first()
         if not db_member :
             raise HTTPException(status_code=400, detail="Empty Member")
-        
-        db_result = (
-            db.query(
-                models.Exam.ExamIdx,
-                models.Exam.Title,
-                models.Exam.ExamDatetime,
-                models.Exam.PersonnelCount,
-                models.ExamReservation.MemberIdx,
-                models.ExamReservation.Memo,
-                models.ExamReservation.ConfirmDatetime,
-                models.ExamReservation.RegDatetime
-            )
-            .join(models.ExamReservation, 
-                models.Exam.ExamIdx == models.ExamReservation.ExamIdx)
-            .filter(models.ExamReservation.MemberIdx == db_member.MemberIdx)
-            .all()
-        )
-
-        response = []
-        if db_result:
-            for exam in db_result:
-                logger.info(f"exam : {exam}")
-                response.append(
-                    schema.ExamWithExamReservation(
-                        ExamIdx= exam.ExamIdx,
-                        Title= exam.Title,
-                        ExamDatetime= exam.ExamDatetime,
-                        PersonnelCount= exam.PersonnelCount,
-                        MemberIdx= exam.MemberIdx,
-                        Memo= exam.Memo,
-                        ConfirmDatetime= exam.ConfirmDatetime,
-                        RegDatetime= exam.RegDatetime
-                    )
-                )
-        return response
+        return db_member
     except HTTPException as http_exc:
         # HTTPException 발생 시 로깅 후 재발생
         logger.error(f"HTTPException: {http_exc.detail}")
