@@ -41,7 +41,7 @@ def verify_admin_token(token: str = Depends(oauth2_scheme)):
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        data: str = payload.get("data")
+        data: str = payload.get("admin_data")
         if data is None:
             raise credentials_exception
     except JWTError:

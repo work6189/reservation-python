@@ -1,22 +1,5 @@
 from pydantic import BaseModel
-from datetime import datetime, time, timedelta
-
-class MemberLogin(BaseModel):
-    Id: str
-    Password: str
-
-class MemberBase(BaseModel):
-    Id: str
-    Name: str
-    
-class MemberCreate(MemberBase):
-    Password: str
-
-class Member(MemberBase):
-    MemberIdx: int
-
-    class Config:
-        from_attributes = True
+from datetime import datetime
 
 class ExamSearch(BaseModel):
     Title: str = None
@@ -58,26 +41,3 @@ class ExamWithExamReservation(ExamList):
     Memo: str
     ConfirmDatetime: datetime
     RegDatetime: datetime 
-
-class Reservation(BaseModel):
-    Memo: str = None
-
-class AdminReservation(BaseModel):
-    Memo: str = None
-    ConfirmDatetime: datetime = None
-
-class AdminBase(BaseModel):
-    Id: str
-    Name: str
-
-class Admin(AdminBase):
-    AdminIdx: int
-
-    class Config:
-        from_attributes = True
-
-class responseModel(BaseModel):
-    result: bool
-    code: int
-    message: str
-
