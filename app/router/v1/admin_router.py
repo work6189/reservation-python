@@ -28,7 +28,7 @@ async def get_reservation(admin_idx: str = Depends(auth.verify_admin_token),db: 
                 models.ExamReservation.ConfirmDatetime,
                 models.ExamReservation.RegDatetime
             )
-            .join(models.ExamReservation, 
+            .outerjoin(models.ExamReservation, 
                 models.Exam.ExamIdx == models.ExamReservation.ExamIdx)
             .all()
         )

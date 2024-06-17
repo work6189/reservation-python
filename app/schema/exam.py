@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 from datetime import datetime
 
 class ExamSearch(BaseModel):
@@ -37,7 +38,7 @@ class ExamWithReservationCount(ExamList):
     ReservationCount: int
 
 class ExamWithExamReservation(ExamList):
-    MemberIdx: int
-    Memo: str
-    ConfirmDatetime: datetime = None
-    RegDatetime: datetime 
+    MemberIdx: Optional[int] = None
+    Memo: Optional[str] = None
+    ConfirmDatetime: Optional[datetime] = None
+    RegDatetime: Optional[datetime] = None
