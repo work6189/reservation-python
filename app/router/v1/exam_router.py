@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-@router.get("/exam/", response_model=List[schema.ExamWithReservationCount])
+@router.get("/exam", response_model=List[schema.ExamWithReservationCount])
 def search_exams(params: schema.ExamSearch, db: SessionLocal = Depends(get_db)):
     try:
         future_time = func.now() + text("INTERVAL '3 HOURS'")

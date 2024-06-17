@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-@router.post("/users/", response_model=schema.MemberBase)
+@router.post("/users", response_model=schema.MemberBase)
 def create_member(member: schema.MemberCreate, db: SessionLocal = Depends(get_db)):
     try:
         db_member = db.query(models.Member).filter(models.Member.Id == member.Id).first()

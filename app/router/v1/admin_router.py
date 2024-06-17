@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-@router.get("/admin/reservation/", response_model=List[schema.ExamWithExamReservation])
+@router.get("/admin/reservation", response_model=List[schema.ExamWithExamReservation])
 async def get_reservation(admin_idx: str = Depends(auth.verify_admin_token),db: SessionLocal = Depends(get_db)):
     try:
         # admin vertify
@@ -129,7 +129,7 @@ async def modify_reservation(examIdx: int, memberIdx: int, params: schema.AdminR
         logger.error(f"Error Create Reservation: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
     
-@router.post("/admin/users/", response_model=schema.AdminBase)
+@router.post("/admin/users", response_model=schema.AdminBase)
 def create_admin(admin: schema.AdminCreate, db: SessionLocal = Depends(get_db)):
     try:
         db_admin = db.query(models.Admin).filter(models.Admin.Id == admin.Id).first()
@@ -178,7 +178,7 @@ def login_admin_member(admin: schema.AdminLogin, db: SessionLocal = Depends(get_
         logger.error(f"Error Login member: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
     
-@router.post("/admin/exam/")
+@router.post("/admin/exam")
 def create_exam(exam: schema.ExamCreate, admin_idx: str = Depends(auth.verify_admin_token), db: SessionLocal = Depends(get_db)):
     try:
         # admin vertify
